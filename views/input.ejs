@@ -1,0 +1,196 @@
+<style>
+    h4 {
+        margin: unset;
+    }
+    .two-column {
+        float: left;
+        width: 50%;
+    }
+    #header_table{
+        padding:10px;
+        border: 1px solid black;
+        margin-top:20px;
+        margin-bottom:10px;
+    }
+    #header_table td{
+        padding: 4px 2px;
+    }
+    #input_table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+        }
+    #input_table td, #input_table th{
+        padding: 8px 4px;
+    }
+    input:disabled{
+        background:#eee;
+    }
+
+</style>
+
+<table id="header_table">
+    <tbody>
+        <tr>
+            <td width="33%">Year of assessment</td>
+            <td width="53%"><b>2018/19</b></td>
+        </tr>
+        <tr>
+            <td width="33%">Marital status</td>
+            <td width="53%"><input type="radio" name="marital_status" id="single" value="single" checked>
+                Single / Separated / Divorced / Widowed
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td width="14%"><input type="radio" name="marital_status" id="married" value="married">Married</td>
+        </tr>
+    </tbody>
+</table>
+<table id="input_table">
+    <tr>
+        <th></th>
+        <th><center>Self HK($)</center></th> 
+        <th><center>Spouse HK($)</center></th>
+    </tr>
+    <tr>
+        <td>Annual salary: </td>
+        <td><input type="text" id="self_annual_salary" onchange="runTwoFunctions()" value="0"></td> 
+        <td><input type="text" id="spouse_annual_salary" onchange="runTwoFunctions()" value="0"></td>
+    </tr>
+    <tr>
+        <td>Mandatory Provident Fund (MPF): </td>
+        <td><input type="text" id="self_mpf" value="0" disabled></td>
+        <td><input type="text" id="spouse_mpf" value="0" disabled></td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td><b>Deductions</b></td>
+    </tr>
+    <tr>
+        <td>Outgoings and Expenses</td>
+        <td><input type="text" value="0" disabled></td>
+        <td><input type="text" value="0" disabled></td>
+    </tr>
+    <tr>
+        <td>Self Education Expenses</td>
+        <td><input type="text" value="0" disabled></td>
+        <td><input type="text" value="0" disabled></td>
+    </tr>
+    <tr>
+        <td>Approved Charitable Donation</td>
+        <td><input type="text" value="0" disabled></td>
+        <td><input type="text" value="0" disabled></td>
+    </tr>
+    <tr>
+        <td>Home Loan Interest</td>
+        <td><input type="text" value="0" disabled></td>
+        <td><input type="text" value="0" disabled></td>
+    </tr>
+    <tr>
+        <td>Elderly Residential Care Expenses</td>
+        <td><input type="text" value="0" disabled></td>
+        <td><input type="text" value="0" disabled></td>
+    </tr>
+    <tr>
+        <td>Personal Disability Allowance</td>
+        <td><input type="text" value="0" disabled></td>
+        <td><input type="text" value="0" disabled></td>
+    </tr>
+    <tr>
+        <td>No. of any types of dependents</td>
+        <td><input type="text" value="0" disabled></td>
+        <td><input type="text" value="0" disabled></td>
+    </tr>
+    <tr>
+        <td>No. of properties</td>
+        <td><input type="text" value="0" disabled></td>
+        <td><input type="text" value="0" disabled></td>
+    </tr>
+    <tr>
+        <td>Allowance: </td>
+        <td><input type="text" id="self_allowance" value="0" disabled></td> 
+        <td><input type="text" id="spouse_allowance" value="0" disabled></td>
+    </tr>
+</table>
+
+<script>   
+    function update_output() {
+        var self_annual_salary = parseFloat(document.getElementById("self_annual_salary").value);
+        var spouse_annual_salary = parseFloat(document.getElementById("spouse_annual_salary").value);
+  
+        console.log(document.getElementById("self_annual_salary").value);
+
+        if (document.getElementById("self_annual_salary").value == "") {
+            self_annual_salary = 0;
+            document.getElementById("self_annual_salary").value = "0";
+        }
+        
+        if (document.getElementById("spouse_annual_salary").value == "") {
+            spouse_annual_salary = 0;
+            document.getElementById("spouse_annual_salary").value = "0";
+        }
+        
+        var result = "";
+        
+        if (self_annual_salary < (7100 * 12)) {
+            self_result = "0";
+        } else {
+            self_result = parseFloat(self_annual_salary * 0.05).toFixed(2);
+
+            if (self_result > 18000) {
+                self_result = "18000";
+            } else {
+                self_result = self_result;
+            }
+        }
+
+        if (spouse_annual_salary < (7100 * 12)) {
+            spouse_result = "0";
+        } else {
+            spouse_result = parseFloat(spouse_annual_salary * 0.05).toFixed(2);
+
+            if (spouse_result > 18000) {
+                spouse_result = "18000";
+            } else {
+                spouse_result = spouse_result;
+            }
+        }
+
+        // input.ejs
+        document.getElementById("self_mpf").value = self_result;
+        document.getElementById("spouse_mpf").value = spouse_result;
+
+        // output.ejs
+        document.getElementById("self_annual_salary_output").innerText = self_annual_salary;
+        document.getElementById("spouse_annual_salary_output").innerText = spouse_annual_salary;
+        document.getElementById("joint_annual_salary_output").innerText = self_annual_salary+spouse_annual_salary;
+    }
+
+    function checkAllowance() {
+        var self_annual_salary = document.getElementById("self_annual_salary").value;
+        var spouse_annual_salary = document.getElementById("spouse_annual_salary").value;
+
+        if (self_annual_salary) {
+            document.getElementById("self_allowance").value = "132000";
+            document.getElementById("self_allowance").style.color = "red";
+        } else {
+            document.getElementById("self_allowance").value = "0";
+            document.getElementById("self_allowance").style.color = "unset";
+        }
+
+        if (spouse_annual_salary) {
+            document.getElementById("spouse_allowance").value = "132000";
+            document.getElementById("spouse_allowance").style.color = "red";
+        } else {
+            document.getElementById("spouse_allowance").value = "0";
+            document.getElementById("spouse_allowance").style.color = "unset";
+        }
+    }
+    
+    function runTwoFunctions() {
+        update_output();
+        checkAllowance();
+    }
+</script>

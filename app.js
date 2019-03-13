@@ -3,10 +3,6 @@ const app = express();
 app.set('view engine', 'ejs');
 
 app.get('/', function (req, res) {
-  res.send('Hello World!');
-});
-
-app.get('/homepage', function (req, res) {
     res.render('homepage');
   });
 

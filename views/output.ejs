@@ -1,0 +1,111 @@
+<style>
+        #output_table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        #output_table td, #output_table th {
+          border: 1px solid #ddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        #output_table tr:nth-child(even) {
+          background-color: #eee;
+        }
+        #output_table .value{
+            text-align:center;
+            width:25px;
+        }
+</style>
+
+<h3>Computation of Estimated Salaries Tax Liabilities</h3>
+<table id="output_table">
+    <tr>
+        <th style="text-align:right;">HK$</th>
+        <th class="value">Self</th>
+        <th class="value">Spouse</th>
+        <th class="value">Under Joint Assessment</th>
+    </tr>
+    <tr>
+        <td><b>ANNUAL SALARY</b></td>
+        <td class="value" id="self_annual_salary_output">0</td>
+        <td class="value" id="spouse_annual_salary_output">0</td>
+        <td class="value" id="joint_annual_salary_output">0</td>
+    </tr>
+    <tr>
+        <td><b>MANDATORY PROVIDENT FUND (MPF)</b></td>
+        <td class="value" id="self_mpf_output">0</td>
+        <td class="value" id="spouse_mpf_output">0</td>
+        <td class="value" id="joint_mpf_output">0</td>
+    </tr>
+    <tr>
+        <td colspan="4"><b>Deductions</b></td>
+    </tr>
+    <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;Outgoings and Expenses</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+    </tr>
+    <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;Self Education Expense</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+    </tr>
+    <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;Approved Charitable Donation</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+    </tr>
+    <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;Home Loan Interest</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+    </tr>
+    <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;Elderly Residential Care Expenses</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+    </tr>
+    <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;Personal Disability Allowance</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+    </tr>
+    <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;No. of any types of dependents</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+    </tr>
+    <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;No. of properties</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+    </tr>
+    <tr>
+        <td><b>TOTAL ALLOWANCES</b></td>
+        <td class="value" id="self_total_allowance">0</td>
+        <td class="value" id="spouse_total_allowance">0</td>
+        <td class="value" id="joint_total_allowance">0</td>
+    </tr>
+    <tr>
+        <td><b>NET CHARGEABLE INCOME</b></td>
+        <td class="value" id="self_net_chargeable_income">0</td>
+        <td class="value" id="spouse_net_chargeable_income">0</td>
+        <td class="value" id="joint_net_chargeable_income">0</td>
+    </tr>
+    <tr>
+        <td><b>TOTAL TAX PAYABLE</b></td>
+        <td class="value" id="separate_total_tax_payable" colspan="2">0</td>
+        <td class="value" id="joint_total_tax_payable">0</td>
+    </tr>
+</table>
