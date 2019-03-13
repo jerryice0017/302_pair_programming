@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tax Assessment Program</title>
+</head>
+
+<style>
+    h4 {
+        margin: unset;
+    }
+</style>
+
+<body>
+    <H1><center>Tax Assessment Program</center></H1>
+
+    
+    <center>
+    <br><br><table border="0" width="595">
+    <tbody><tr>
+    <td width="33%">Year of assessment</td>
+    <td width="53%">
+    <b>2018/19</b>	
+    </td>
+    </tr>
+
+    <tr>
+    <td width="33%">Marital status</td>
+    <td width="53%"><input type="radio" name="marital_status" id="single" value="single" checked="" onclick="checkAllowance()">
+    Single / Separated / Divorced / Widowed</td>
+    <td width="14%"><input type="radio" name="marital_status" id="married" value="married" onclick="checkAllowance()">Married</td>
+    </tr>
+    </tbody></table>
+    </center>
+    <hr>
+    <br>
+    
+    <h4>Annual salary: <input type="text" id="annual_salary"> <button type="button" id="annual_salary_submit" onclick="calculateMPF()">Submit</button></h4><br>
+    <h4>Allowance: <input type="text" id="allowance" value="132000" disabled></h4><br>
+    <h4>Mandatory Provident Fund (MPF): <input type="text" id="annual_salary_output" value="0" disabled></h4>
+</body>
+
+<script>
+    function calculateMPF() {
+        var annual_salary = document.getElementById("annual_salary").value;
+        var result = "";
+        // console.log(annual_salary);
+        
+        if (annual_salary < (7100 * 12)) {
+            result = "0";
+        } else {
+            result = parseFloat(annual_salary * 0.05).toFixed(2);
+
+            if (result > 18000) {
+                result = "18000";
+            } else {
+                result = result;
+            }
+        }
+
+        document.getElementById("annual_salary_output").value = result;
+    }
+
+    function checkAllowance() {
+        if (document.getElementById("single").checked) {
+            document.getElementById("allowance").value = "132000";
+        } else if (document.getElementById("married").checked) {
+            document.getElementById("allowance").value = "264000";   
+        }
+    }
+</script>
+</html>
