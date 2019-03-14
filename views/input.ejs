@@ -42,7 +42,7 @@
         </tr>
         <tr>
             <td></td>
-            <td width="14%"><input type="radio" name="marital_status" id="married" value="married">Married</td>
+            <td width="14%"><input type="radio" name="marital_status" id="married" value="married"> Married</td>
         </tr>
     </tbody>
 </table>
@@ -54,8 +54,8 @@
     </tr>
     <tr>
         <td>Annual salary: </td>
-        <td><input type="text" id="self_annual_salary" onchange="runTwoFunctions()" value="0"></td> 
-        <td><input type="text" id="spouse_annual_salary" onchange="runTwoFunctions()" value="0"></td>
+        <td><input type="text" id="self_annual_salary" onchange="runMultipleFunctions()" placeholder="0"></td> 
+        <td><input type="text" id="spouse_annual_salary" onchange="runMultipleFunctions()" placeholder="0"></td>
     </tr>
     <tr>
         <td>Mandatory Provident Fund (MPF): </td>
@@ -115,82 +115,270 @@
     </tr>
 </table>
 
-<script>   
+<script>
     function update_output() {
-        var self_annual_salary = parseFloat(document.getElementById("self_annual_salary").value);
-        var spouse_annual_salary = parseFloat(document.getElementById("spouse_annual_salary").value);
-  
-        console.log(document.getElementById("self_annual_salary").value);
-
-        if (document.getElementById("self_annual_salary").value == "") {
+        var self_annual_salary = parseFloat(document.getElementById("self_annual_salary").value).toFixed(2).replace(/[.,]00$/, "");
+        var spouse_annual_salary = parseFloat(document.getElementById("spouse_annual_salary").value).toFixed(2).replace(/[.,]00$/, "");
+        
+        if (document.getElementById("self_annual_salary").value == "" || self_annual_salary==0) {
             self_annual_salary = 0;
-            document.getElementById("self_annual_salary").value = "0";
+            document.getElementById("self_annual_salary").value = "";
         }
         
-        if (document.getElementById("spouse_annual_salary").value == "") {
+        if (document.getElementById("spouse_annual_salary").value == "" || spouse_annual_salary==0) {
             spouse_annual_salary = 0;
-            document.getElementById("spouse_annual_salary").value = "0";
+            document.getElementById("spouse_annual_salary").value = "";
         }
         
         var result = "";
         
         if (self_annual_salary < (7100 * 12)) {
-            self_result = "0";
+            self_mpf_result = 0;
         } else {
-            self_result = parseFloat(self_annual_salary * 0.05).toFixed(2);
+            self_mpf_result = parseFloat(self_annual_salary * 0.05).toFixed(2).replace(/[.,]00$/, "");
 
-            if (self_result > 18000) {
-                self_result = "18000";
+            if (self_mpf_result > 18000) {
+                self_mpf_result = 18000.00;
             } else {
-                self_result = self_result;
+                self_mpf_result = self_mpf_result;
             }
         }
 
         if (spouse_annual_salary < (7100 * 12)) {
-            spouse_result = "0";
+            spouse_mpf_result = 0;
         } else {
-            spouse_result = parseFloat(spouse_annual_salary * 0.05).toFixed(2);
+            spouse_mpf_result = parseFloat(spouse_annual_salary * 0.05).toFixed(2).replace(/[.,]00$/, "");
 
-            if (spouse_result > 18000) {
-                spouse_result = "18000";
+            if (spouse_mpf_result > 18000) {
+                spouse_mpf_result = 18000.00;
             } else {
-                spouse_result = spouse_result;
+                spouse_mpf_result = spouse_mpf_result;
             }
         }
 
         // input.ejs
-        document.getElementById("self_mpf").value = self_result;
-        document.getElementById("spouse_mpf").value = spouse_result;
+        document.getElementById("self_mpf").value = self_mpf_result;
+        document.getElementById("spouse_mpf").value = spouse_mpf_result;
 
         // output.ejs
         document.getElementById("self_annual_salary_output").innerText = self_annual_salary;
         document.getElementById("spouse_annual_salary_output").innerText = spouse_annual_salary;
-        document.getElementById("joint_annual_salary_output").innerText = self_annual_salary+spouse_annual_salary;
+        document.getElementById("joint_annual_salary_output").innerText = parseFloat(self_annual_salary)+parseFloat(spouse_annual_salary);
+        document.getElementById("standard_self_annual_salary_output").innerText = self_annual_salary;
+        document.getElementById("standard_spouse_annual_salary_output").innerText = spouse_annual_salary;
+        document.getElementById("standard_joint_annual_salary_output").innerText = parseFloat(self_annual_salary)+parseFloat(spouse_annual_salary);
+
+        document.getElementById("self_mpf_output").innerText = self_mpf_result;
+        document.getElementById("spouse_mpf_output").innerText = spouse_mpf_result;
+        document.getElementById("joint_mpf_output").innerText = parseFloat(self_mpf_result)+parseFloat(spouse_mpf_result);
+        document.getElementById("standard_self_mpf_output").innerText = self_mpf_result;
+        document.getElementById("standard_spouse_mpf_output").innerText = spouse_mpf_result;
+        document.getElementById("standard_joint_mpf_output").innerText = parseFloat(self_mpf_result)+parseFloat(spouse_mpf_result);
     }
 
     function checkAllowance() {
         var self_annual_salary = document.getElementById("self_annual_salary").value;
         var spouse_annual_salary = document.getElementById("spouse_annual_salary").value;
 
-        if (self_annual_salary) {
-            document.getElementById("self_allowance").value = "132000";
-            document.getElementById("self_allowance").style.color = "red";
+        if (self_annual_salary != 0) {
+            // input.ejs
+            document.getElementById("self_total_allowance").value = 132000;
+            document.getElementById("self_total_allowance").style.color = "red";
+            document.getElementById("standard_self_total_allowance").value = 132000;
+            document.getElementById("standard_self_total_allowance").style.color = "red";
+
+            // output.ejs
+            document.getElementById("self_total_allowance").innerText = 132000;
+            document.getElementById("self_total_allowance").style.color = "red";
+            document.getElementById("standard_self_total_allowance").innerText = 132000;
+            document.getElementById("standard_self_total_allowance").style.color = "red";
         } else {
-            document.getElementById("self_allowance").value = "0";
-            document.getElementById("self_allowance").style.color = "unset";
+            // input.ejs
+            document.getElementById("self_total_allowance").value = "0";
+            document.getElementById("self_total_allowance").style.color = "unset";
+            document.getElementById("standard_self_total_allowance").value = "0";
+            document.getElementById("standard_self_total_allowance").style.color = "unset";
+
+            // output.ejs
+            document.getElementById("self_total_allowance").innerText = "0";
+            document.getElementById("self_total_allowance").style.color = "unset";
+            document.getElementById("standard_self_total_allowance").innerText = "0";
+            document.getElementById("standard_self_total_allowance").style.color = "unset";            
         }
 
-        if (spouse_annual_salary) {
-            document.getElementById("spouse_allowance").value = "132000";
-            document.getElementById("spouse_allowance").style.color = "red";
+        if (spouse_annual_salary != 0) {
+            // input.ejs
+            document.getElementById("spouse_total_allowance").value = 132000;
+            document.getElementById("spouse_total_allowance").style.color = "red";
+            document.getElementById("standard_spouse_total_allowance").value = 132000;
+            document.getElementById("standard_spouse_total_allowance").style.color = "red";
+
+            // output.ejs
+            document.getElementById("spouse_total_allowance").innerText = 132000;
+            document.getElementById("spouse_total_allowance").style.color = "red";
+            document.getElementById("standard_spouse_total_allowance").innerText = 132000;
+            document.getElementById("standard_spouse_total_allowance").style.color = "red";
         } else {
-            document.getElementById("spouse_allowance").value = "0";
-            document.getElementById("spouse_allowance").style.color = "unset";
+            // input.ejs
+            document.getElementById("spouse_total_allowance").value = "0";
+            document.getElementById("spouse_total_allowance").style.color = "unset";
+            document.getElementById("standard_spouse_total_allowance").value = "0";
+            document.getElementById("standard_spouse_total_allowance").style.color = "unset";
+
+            // output.ejs
+            document.getElementById("spouse_total_allowance").innerText = "0";
+            document.getElementById("spouse_total_allowance").style.color = "unset";
+            document.getElementById("standard_spouse_total_allowance").innerText = "0";
+            document.getElementById("standard_spouse_total_allowance").style.color = "unset";
+        }
+
+        // output.ejs
+        if (self_annual_salary != 0 && spouse_annual_salary != 0) {
+            document.getElementById("joint_total_allowance").innerText = 132000*2;
+            document.getElementById("joint_total_allowance").style.color = "red";
+            document.getElementById("standard_joint_total_allowance").innerText = 132000*2;
+            document.getElementById("standard_joint_total_allowance").style.color = "red";
+        } else if (self_annual_salary != 0 || spouse_annual_salary != 0) {
+            document.getElementById("joint_total_allowance").innerText = 132000;
+            document.getElementById("joint_total_allowance").style.color = "red";
+            document.getElementById("standard_joint_total_allowance").innerText = 132000;
+            document.getElementById("standard_joint_total_allowance").style.color = "red";
+        } else {
+            document.getElementById("joint_total_allowance").innerText = "0";
+            document.getElementById("joint_total_allowance").style.color = "unset";
+            document.getElementById("standard_joint_total_allowance").innerText = "0";
+            document.getElementById("standard_joint_total_allowance").style.color = "unset";
         }
     }
+
+    // output.ejs
+    function calNetChargeableIncome() {
+        var self_annual_salary = document.getElementById("self_annual_salary_output").innerText;
+        var spouse_annual_salary = document.getElementById("spouse_annual_salary_output").innerText;
+        var joint_annual_salary = document.getElementById("joint_annual_salary_output").innerText;
+
+        var self_mpf = document.getElementById("self_mpf_output").innerText;
+        var spouse_mpf = document.getElementById("spouse_mpf_output").innerText;
+        var joint_mpf = document.getElementById("joint_mpf_output").innerText;
+
+        var self_total_allowance = document.getElementById("self_total_allowance").innerText;
+        var spouse_total_allowance = document.getElementById("spouse_total_allowance").innerText;
+        var joint_total_allowance = document.getElementById("joint_total_allowance").innerText; 
+
+        self_net_chargeable_income = self_annual_salary-self_mpf-self_total_allowance;
+        spouse_net_chargeable_income = spouse_annual_salary-spouse_mpf-spouse_total_allowance;
+        joint_net_chargeable_income = joint_annual_salary-joint_mpf-joint_total_allowance;
+
+        if (self_net_chargeable_income < 0) {
+            document.getElementById("self_net_chargeable_income").innerText = 0;
+            document.getElementById("standard_self_net_chargeable_income").innerText = 0;
+        } else {
+            document.getElementById("self_net_chargeable_income").innerText = parseFloat(self_net_chargeable_income).toFixed(2).replace(/[.,]00$/, "");
+            document.getElementById("standard_self_net_chargeable_income").innerText = parseFloat(self_net_chargeable_income).toFixed(2).replace(/[.,]00$/, "");  
+        }
+
+        if (spouse_net_chargeable_income < 0) {
+            document.getElementById("spouse_net_chargeable_income").innerText = 0;
+            document.getElementById("standard_spouse_net_chargeable_income").innerText = 0;
+        } else {
+            document.getElementById("spouse_net_chargeable_income").innerText = parseFloat(spouse_net_chargeable_income).toFixed(2).replace(/[.,]00$/, ""); 
+            document.getElementById("standard_spouse_net_chargeable_income").innerText = parseFloat(spouse_net_chargeable_income).toFixed(2).replace(/[.,]00$/, "");  
+        }        
+
+        if (joint_net_chargeable_income < 0) {
+            document.getElementById("joint_net_chargeable_income").innerText = 0;
+            document.getElementById("standard_joint_net_chargeable_income").innerText = 0;
+        } else {
+            document.getElementById("joint_net_chargeable_income").innerText = parseFloat(joint_net_chargeable_income).toFixed(2).replace(/[.,]00$/, ""); 
+            document.getElementById("standard_joint_net_chargeable_income").innerText = parseFloat(joint_net_chargeable_income).toFixed(2).replace(/[.,]00$/, ""); 
+        }
+    }
+
+    function self_separate_taxBracket_output() {
+        var self_net_chargeable_income = parseFloat(document.getElementById("self_net_chargeable_income").innerText).toFixed(2).replace(/[.,]00$/, "");
+
+        var self_separate_tax = taxBracket(self_net_chargeable_income);
+        document.getElementById("self_separate_total_tax_payable").innerText = self_separate_tax;
+    }    
+
+    function spouse_separate_taxBracket_output() {
+        var spouse_net_chargeable_income = parseFloat(document.getElementById("spouse_net_chargeable_income").innerText).toFixed(2).replace(/[.,]00$/, "");
+
+        var spouse_separate_tax = taxBracket(spouse_net_chargeable_income);
+        document.getElementById("spouse_separate_total_tax_payable").innerText = spouse_separate_tax;
+    }     
     
-    function runTwoFunctions() {
+    function separate_taxBracket_output() {
+        var self_separate_total_tax_payable = parseFloat(document.getElementById("self_separate_total_tax_payable").innerText).toFixed(2).replace(/[.,]00$/, "");
+        var spouse_separate_total_tax_payable = parseFloat(document.getElementById("spouse_separate_total_tax_payable").innerText).toFixed(2).replace(/[.,]00$/, "");
+        var separate_tax = self_separate_total_tax_payable-(-spouse_separate_total_tax_payable);
+
+        document.getElementById("separate_total_tax_payable").innerText = separate_tax;
+    }
+
+    function joint_taxBracket_output() {
+        var joint_net_chargeable_income = document.getElementById("joint_net_chargeable_income").innerText;
+
+        // console.log(joint_net_chargeable_income);
+
+        var joint_tax = taxBracket(joint_net_chargeable_income);
+        document.getElementById("joint_total_tax_payable").innerText = joint_tax;
+
+        // console.log(joint_tax);
+    }
+
+    function taxBracket(x) {
+        // console.log("x=" + x);
+
+        switch (true) {
+            case (x == 0):
+                tax = x;
+                break;
+            case (x <= 50000):
+                tax = x * 0.02;
+                break;
+            case (x <= 100000):
+                tax = (x - 50000) * 0.06 + 50000 * 0.02;
+                break;
+            case (x <= 150000):
+                tax = (x - 100000) * 0.1 + 50000 * 0.06 + 50000 * 0.02;
+                break;
+            case (x <= 200000):
+                tax = (x - 150000) * 0.14 + 50000 * 0.1 + 50000 * 0.06 + 50000 * 0.02;
+                break;
+            case (x > 200000):
+                tax = (x - 200000) * 0.17 + 50000 * 0.14 + 50000 * 0.1 + 50000 * 0.06 + 50000 * 0.02;
+                break;
+            default:
+                break;
+        }
+
+        tax = Math.floor(tax);
+
+        // console.log(tax);
+        return tax;
+    }
+
+    function standardTaxRate() {
+        var standard_self_total_tax_payable = (parseFloat(document.getElementById("self_net_chargeable_income").innerText)*15/100).toFixed(2).replace(/[.,]00$/, "");
+        document.getElementById("standard_self_total_tax_payable").innerText = standard_self_total_tax_payable;
+        var standard_spouse_total_tax_payable = (parseFloat(document.getElementById("spouse_net_chargeable_income").innerText)*15/100).toFixed(2).replace(/[.,]00$/, "");
+        document.getElementById("standard_spouse_total_tax_payable").innerText = standard_spouse_total_tax_payable;
+        var standard_separate_total_tax_payable = standard_self_total_tax_payable-(-standard_spouse_total_tax_payable);
+        document.getElementById("standard_separate_total_tax_payable").innerText = standard_separate_total_tax_payable;
+        var standard_joint_total_tax_payable = (parseFloat(document.getElementById("joint_net_chargeable_income").innerText)*15/100).toFixed(2).replace(/[.,]00$/, "");
+        document.getElementById("standard_joint_total_tax_payable").innerText = standard_joint_total_tax_payable;
+    }
+    
+    function runMultipleFunctions() {
         update_output();
         checkAllowance();
+        calNetChargeableIncome();
+        self_separate_taxBracket_output();
+        spouse_separate_taxBracket_output();
+        separate_taxBracket_output();
+        joint_taxBracket_output();
+        standardTaxRate();
+        recommendation();
     }
 </script>

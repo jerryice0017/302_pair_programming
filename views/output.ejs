@@ -11,40 +11,65 @@
           padding: 8px;
         }
         
-        #output_table tr:nth-child(even) {
+        #output_table tr:nth-child(2n+3) {
           background-color: #eee;
         }
-        #output_table .value{
+        #output_table .value {
             text-align:center;
             width:25px;
+        }
+        .boxbox {
+            padding:8px;
+            border: 1px solid black;
+            margin-top:10px;
+        }
+        .value {
+            font-size:13px;
         }
 </style>
 
 <h3>Computation of Estimated Salaries Tax Liabilities</h3>
 <table id="output_table">
     <tr>
-        <th style="text-align:right;">HK$</th>
+        <th style="text-align:right;" rowspan="2">HK$</th>
+        <th class="value" colspan="2">Separate Taxation</th>
+        <th class="value"rowspan="2">Joint Assessment</th>
+        <th class="value"colspan="3">Standard Tax Rate</th>
+
+    </tr>
+    <tr>
         <th class="value">Self</th>
         <th class="value">Spouse</th>
-        <th class="value">Under Joint Assessment</th>
+        <th class="value">Self</th>
+        <th class="value">Spouse</th>
+        <th class="value">Joint Assessment</th>
     </tr>
     <tr>
         <td><b>ANNUAL SALARY</b></td>
         <td class="value" id="self_annual_salary_output">0</td>
         <td class="value" id="spouse_annual_salary_output">0</td>
         <td class="value" id="joint_annual_salary_output">0</td>
+        <td class="value" id="standard_self_annual_salary_output">0</td>
+        <td class="value" id="standard_spouse_annual_salary_output">0</td>
+        <td class="value" id="standard_joint_annual_salary_output">0</td>
     </tr>
     <tr>
         <td><b>MANDATORY PROVIDENT FUND (MPF)</b></td>
         <td class="value" id="self_mpf_output">0</td>
         <td class="value" id="spouse_mpf_output">0</td>
         <td class="value" id="joint_mpf_output">0</td>
+        <td class="value" id="standard_self_mpf_output">0</td>
+        <td class="value" id="standard_spouse_mpf_output">0</td>
+        <td class="value" id="standard_joint_mpf_output">0</td>
     </tr>
     <tr>
-        <td colspan="4"><b>Deductions</b></td>
+        <td colspan="7"><b>Deductions</b></td>
     </tr>
     <tr>
         <td>&nbsp;&nbsp;&nbsp;&nbsp;Outgoings and Expenses</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
         <td class="value">0</td>
         <td class="value">0</td>
         <td class="value">0</td>
@@ -54,9 +79,15 @@
         <td class="value">0</td>
         <td class="value">0</td>
         <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
     </tr>
     <tr>
         <td>&nbsp;&nbsp;&nbsp;&nbsp;Approved Charitable Donation</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
         <td class="value">0</td>
         <td class="value">0</td>
         <td class="value">0</td>
@@ -66,9 +97,15 @@
         <td class="value">0</td>
         <td class="value">0</td>
         <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
     </tr>
     <tr>
         <td>&nbsp;&nbsp;&nbsp;&nbsp;Elderly Residential Care Expenses</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
         <td class="value">0</td>
         <td class="value">0</td>
         <td class="value">0</td>
@@ -78,9 +115,15 @@
         <td class="value">0</td>
         <td class="value">0</td>
         <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
     </tr>
     <tr>
         <td>&nbsp;&nbsp;&nbsp;&nbsp;No. of any types of dependents</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
         <td class="value">0</td>
         <td class="value">0</td>
         <td class="value">0</td>
@@ -90,22 +133,75 @@
         <td class="value">0</td>
         <td class="value">0</td>
         <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
+        <td class="value">0</td>
     </tr>
     <tr>
         <td><b>TOTAL ALLOWANCES</b></td>
         <td class="value" id="self_total_allowance">0</td>
         <td class="value" id="spouse_total_allowance">0</td>
         <td class="value" id="joint_total_allowance">0</td>
+        <td class="value" id="standard_self_total_allowance">0</td>
+        <td class="value" id="standard_spouse_total_allowance">0</td>
+        <td class="value" id="standard_joint_total_allowance">0</td>
     </tr>
     <tr>
         <td><b>NET CHARGEABLE INCOME</b></td>
         <td class="value" id="self_net_chargeable_income">0</td>
         <td class="value" id="spouse_net_chargeable_income">0</td>
         <td class="value" id="joint_net_chargeable_income">0</td>
+        <td class="value" id="standard_self_net_chargeable_income">0</td>
+        <td class="value" id="standard_spouse_net_chargeable_income">0</td>
+        <td class="value" id="standard_joint_net_chargeable_income">0</td>
     </tr>
     <tr>
-        <td><b>TOTAL TAX PAYABLE</b></td>
+        <td rowspan="2"><b>TOTAL TAX PAYABLE</b></td>
+        <td class="value" id="self_separate_total_tax_payable">0</td>
+        <td class="value" id="spouse_separate_total_tax_payable">0</td>
+        <td class="value" id="joint_total_tax_payable" rowspan="2">0</td>
+        <td class="value" id="standard_self_total_tax_payable">0</td>
+        <td class="value" id="standard_spouse_total_tax_payable">0</td>
+        <td class="value" id="standard_joint_total_tax_payable" rowspan="2">0</td>
+    </tr>
+    <tr style=" background-color: unset;">
         <td class="value" id="separate_total_tax_payable" colspan="2">0</td>
-        <td class="value" id="joint_total_tax_payable">0</td>
+        <td class="value" id="standard_separate_total_tax_payable" colspan="2">0</td>
     </tr>
 </table>
+
+<div class="boxbox">
+    <h6>Recommendation :</h6>
+    <p id="recommendation">(recommendation would be shown here...)</p>
+</div>
+
+<script>
+function recommendation() {
+    var separate_total_tax_payable = parseFloat(document.getElementById("separate_total_tax_payable").innerText).toFixed(2).replace(/[.,]00$/, "");
+    var joint_total_tax_payable = parseFloat(document.getElementById("joint_total_tax_payable").innerText).toFixed(2).replace(/[.,]00$/, "");
+    var standard_separate_total_tax_payable = parseFloat(document.getElementById("standard_separate_total_tax_payable").innerText).toFixed(2).replace(/[.,]00$/, "");
+    var standard_joint_total_tax_payable = parseFloat(document.getElementById("standard_joint_total_tax_payable").innerText).toFixed(2).replace(/[.,]00$/, "");
+
+    var self_annual_salary = parseFloat(document.getElementById("self_annual_salary").value).toFixed(2).replace(/[.,]00$/, "");
+    var spouse_annual_salary = parseFloat(document.getElementById("spouse_annual_salary").value).toFixed(2).replace(/[.,]00$/, "");
+   
+    var tax_payables = {
+        "Separate Taxation" : separate_total_tax_payable,
+        "Joint Assessment" : joint_total_tax_payable,
+        "Standard Separate Taxation" : standard_separate_total_tax_payable,
+        "Standard Joint Assessment" : standard_joint_total_tax_payable
+    };
+    // console.log(tax_payables);
+
+    var keys  = Object.keys(tax_payables).sort(function(a,b) { return tax_payables[a] - tax_payables[b]; });
+    var match = keys.filter(function(x) { return tax_payables[x] === tax_payables[keys[0]]; });
+
+    if (match.length <= 1) {
+        document.getElementById("recommendation").innerText = match + " is the best option";
+    } else if (self_annual_salary == "NaN" && spouse_annual_salary == "NaN") {
+        document.getElementById("recommendation").innerText = "(recommendation would be shown here...)";
+    } else {
+        document.getElementById("recommendation").innerText = match + " are both the recommended options";
+    }   
+}
+</script>
